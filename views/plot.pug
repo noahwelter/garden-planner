@@ -1,0 +1,62 @@
+extends layout
+
+block headerLeft
+  a(href="/plots") 〈 Plots
+
+block headerCenter
+  h1= plot.getName()
+
+block headerRight
+  if (plot.getPatchesToPlant().length === 0)
+    a(href=`/plots/${plot.getId()}/edit-plot-details` class="circled") ⋯
+  else
+    form(action=`/plots/${plot.getId()}/clear-selection` method="post")
+      button(type="submit") Done
+
+block main
+  section#plot-data
+    if (plot.somePatchIsPlanted())
+      ul          
+        li
+          form(action=`/plots/${plot.getId()}/clear-plot` method="post")
+            button(type="submit") Remove All Plants
+
+    // Table of plant patches
+    table.plot
+      tbody#edit
+        each row in plot.getPatches()
+          tr
+            each patch in row
+              td(class=`${plot.isPatchToPlant(patch) ? "selected" : ""}`
+                style=`--plant-rgb: ${patch.getPlant() ? patch.getPlantColor() : "var(--unplanted-patch-rgb)"}`)
+                div(class=`patch ${plot.isPatchToPlant(patch) ? "selected" : ""}`
+                    style=`--plant-rgb: ${patch.getPlant() ? patch.getPlantColor() : "var(--unplanted-patch-rgb)"}`)
+                  form(action=`/plots/${plot.getId()}/patches/${patch.getId()}` method="post")
+                    button(type="submit")= patch.getPlantEmoji()
+
+    // Adding plants if a patch is selected
+    if (plot.getPatchesToPlant().length !== 0)
+      form(action=`/plots/${plot.getId()}/plant` method="post" autocomplete="off")
+        label Choose a plant to add:
+        input(list="plant" name="plant")
+        datalist(id="plant")
+          for plant in plants
+            option(value=plant.getName())
+        button(type="submit") Add
+        form(action=`/plots/${plot.getId()}/delete-plants` method="post")
+              button Remove
+
+    // Statistics
+    if (plot.somePatchIsPlanted())
+      table#stats
+        tr
+          th Plant
+          th Yield
+          th Weight (lb)
+          th Calories
+        for stat in plot.getStats()
+          tr
+            td #{stat.name} #{stat.emoji}
+            td= stat.count
+            td= stat.weight.toFixed(1)
+            td= stat.calories

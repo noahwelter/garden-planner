@@ -1,0 +1,35 @@
+extends layout
+
+block headerLeft
+  a(href=`/plots/${plot.getId()}`)= `〈 ${plot.getName()}`
+
+block headerRight
+  form.delete(action=`/plots/${plot.getId()}/delete-plot` method="post")
+    button.delete(type="submit") Delete
+
+block main
+  form(action=`/plots/${plot.getId()}/edit-plot-details` method="post" id="edit-plot-details" autocomplete="off")
+    ul
+      li
+        label(for="plotName") Plot name:
+        input(type="text"
+              name="plotName"
+              placeholder=plot.getName()
+              value=plotName || '')
+      li
+        label(for="plotLength") Length:
+        input(type="text"
+              name="plotLength"
+              placeholder=plot.getLength()
+              value=plotLength || '')
+      li
+        label(for="plotWidth") Width:
+        input(type="text"
+              name="plotWidth"
+              placeholder=plot.getWidth()
+              value=plotWidth || '')
+        input(type="hidden"
+              name="plotId"
+              value=plot.getId())
+
+    button(type="submit" form="edit-plot-details") Save

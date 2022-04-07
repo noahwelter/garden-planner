@@ -1,0 +1,29 @@
+doctype html
+
+html(lang="en-US")
+
+  head
+    title 🌱 Garden Planner
+    meta(charset="UTF-8")
+    meta(name="google" content="notranslate")
+    link(rel="stylesheet" href="/css/whitespace-reset.css")
+    link(rel="stylesheet" href="/css/style.css")
+
+  body
+    header
+      block headerLeft
+        h1
+          a(href="/plots" id="name") Garden Planner
+      block headerCenter
+        div
+      block headerRight
+        div
+
+    main
+      - let kinds = Object.keys(flash || {});
+      if kinds.length > 0
+        ul(class="flash-container")
+          each kind in kinds
+            each message in flash[kind]
+              li.flash(class=kind)= message
+      block main

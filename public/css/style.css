@@ -1,0 +1,245 @@
+:root {
+  --unplanted-patch-rgb: 141, 110, 99;
+  --primary-color: #5D4037;
+  --primary-color-light: #795548;
+  --primary-color-dark: #3E2723;
+  --secondary-color: #689F38;
+  --secondary-color-light: #AED581;
+  --secondary-color-dark: #558B2F;
+}
+
+main {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 0px 15%;
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  background-color: #ebebeb;
+  color: #424242;
+  font-family: Helvetica, sans-serif;
+  font-size: 15px;
+}
+
+body > header {
+  display: flex;
+  min-height: 60px;
+  align-items: center;
+  padding: 15px 15%;
+  justify-content: space-between;
+  background-color: var(--primary-color);
+  font-size: 20px;
+  color: #ffffff;
+  border-bottom: solid 1px var(--primary-color-dark);
+}
+
+body > header h1 {
+  font-size: 30px;
+  font-weight: normal;
+}
+
+body > header a {
+  text-decoration: none;
+  color: inherit;
+}
+
+body > header button {
+  border: none;
+  background-color: inherit;
+  font: inherit;
+  color: inherit;
+}
+
+body > header button.delete {
+  color: #E53935;
+}
+
+body > header button:hover {
+  cursor: pointer;
+}
+
+a.circled {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: solid 2px;
+  height: 40px;
+  width: 40px;
+  font-size: 30px;
+  border-radius: 50%;
+}
+
+a.circled:hover {
+  background-color: var(--primary-color-light);
+}
+
+#addPlot {
+  background-color: var(--secondary-color);
+  border-color: var(--secondary-color);
+}
+
+#addPlot:hover {
+  background-color: var(--secondary-color-dark);
+  border-color: var(--secondary-color-dark);
+}
+
+main > form > ul {
+  display: flex;
+  flex-direction: column;
+  background-color: #ffffff;
+  border-radius: 10px;
+  border: none;
+  padding: 5px 20px;
+}
+
+main > form > ul > li {
+  display: flex;
+  justify-content: flex-end;
+  background-color: transparent;
+}
+
+main > form > ul > li + li {
+  border-top: 1px solid;
+  border-color: #a5a5a5;
+}
+
+main > form > ul > li > label {
+  padding: 15px 5px;
+  flex: 1;
+}
+
+main > form > ul > li > input {
+  padding: 15px 5px;
+  flex: 2;
+  text-align: right;
+  border: none;
+}
+
+.flash-container {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.flash {
+  padding: 5px 20px;
+  border: 1px solid;
+  border-radius: 5px;
+}
+
+.flash.success {
+  color: #43A047;
+  border-color: #43A047;
+  background-color: #C8E6C9;
+}
+
+.flash.error {
+  color: #E53935;
+  border-color: #E53935;
+  background-color: #FFCDD2;
+}
+
+#plots {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-content: space-around;
+}
+
+.plot-link {
+  background-color: var(--secondary-color);
+  color: inherit;
+  text-decoration: none;
+  gap: 5px;
+}
+
+.plot-link:hover {
+  background-color: var(--secondary-color-dark);
+}
+
+.plot-link h3 {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 5px 10px;
+  height: 30px;
+  color: #ffffff;
+  background-color: inherit;
+  border-bottom-right-radius: 10px;
+}
+
+.patch.overview {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 80px;
+  width: auto;
+  aspect-ratio: 1;
+  border-radius: 0px;
+}
+
+#plot-data {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  gap: 10px;
+  border: solid green;
+  height: 80vh;
+  align-items: flex-start;
+}
+
+.plot {
+  border-collapse: collapse;
+}
+
+.plot tbody {
+  display: flex;
+  flex-direction: column;
+}
+
+.plot tr {
+  display: flex;
+}
+
+.plot td ,
+.plot div {
+  display: flex;
+  flex: 1;
+  align-items: center;
+  justify-content: center;
+  aspect-ratio: 1;
+  background-color: rgba(var(--plant-rgb), 0.25);
+}
+
+.plot button {
+  border: none;
+  display: flex;
+  flex-grow: 1;
+  aspect-ratio: 1;
+}
+
+.patch {
+  border-radius: 50% 0px;
+}
+
+div.patch:hover {
+  background-color: rgba(var(--plant-rgb), 1);
+}
+
+.patch.selected {
+  background-color: rgb(var(--plant-rgb), 0.75);
+  font-size: 20px;
+}
+
+.patch.selected:hover {
+  background-color: rgb(var(--plant-rgb), 1);
+}
+
+#stats th, #stats td {
+  border-style: solid;
+}
