@@ -6,28 +6,29 @@ block headerLeft
 block headerCenter
   h1 Create Plot
 
-block headerRight
-  button(type="submit" form="new-plot") Save
-
 block main
-  form(action="/plots/new" method="post" id="new-plot" autocomplete="off")
-    ul
-      li
-        label(for="plotName") Name
-        input(type="text"
-              name="plotName"
-              placeholder="Back yard"
-              value=plotName)
-      li
-        label(for="plotLength") Length (ft)
-        input(type="text"
-              name="plotLength"
-              placeholder="4"
-              value=plotLength)
-      li
-        label(for="plotWidth") Width (ft)
-        input(type="text"
-              name="plotWidth"
-              placeholder="8"
-              value=plotWidth)
-        
+  section.form-list
+    form(action="/plots/new" method="post" id="new-plot" autocomplete="off")
+      ul
+        li
+          label(for="plotName") Name
+          input(type="text"
+                name="plotName"
+                placeholder="Back yard"
+                value=plotName)
+        li
+          label(for="plotLength") Length (ft)
+          input(type="text"
+                name="plotLength"
+                placeholder="4"
+                value=plotLength)
+        li
+          label(for="plotWidth") Width (ft)
+          input(type="text"
+                name="plotWidth"
+                placeholder="8"
+                value=plotWidth)
+      ul
+        li
+          button(type="submit" form="new-plot") Save
+          a(href="/plots" class="cancel") Cancel

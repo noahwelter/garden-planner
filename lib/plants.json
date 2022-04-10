@@ -1,0 +1,169 @@
+{
+  "plants": [
+    {
+      "name": "Carrot",
+      "color": "237, 145, 33",
+      "emoji": "🥕",
+      "weight": 0.31,
+      "yieldRate": 1,
+      "calories": 186,
+      "daysToMaturity": 75,
+      "spread": 3,
+      "height": 6
+    },
+    {
+      "name": "Watermelon",
+      "color": "252, 108, 133",
+      "emoji": "🍉",
+      "weight": 25,
+      "yieldRate": 3,
+      "calories": 1360,
+      "daysToMaturity": 90,
+      "spread": 72,
+      "height": 18
+    },
+    {
+      "name": "Tomato",
+      "color": "255, 99, 71",
+      "emoji": "🍅",
+      "weight": 0.37,
+      "yieldRate": 30,
+      "calories": 81,
+      "daysToMaturity": 65,
+      "spread": 18,
+      "height": 22
+    },
+    {
+      "name": "Cucumber",
+      "color": "115, 175, 89",
+      "emoji": "🥒",
+      "weight": 0.44,
+      "yieldRate": 10,
+      "calories": 68,
+      "daysToMaturity": 45,
+      "spread": 72,
+      "height": 20
+    },
+    {
+      "name": "Potato",
+      "color": "183, 146, 104",
+      "emoji": "🥔",
+      "weight": 0.47,
+      "yieldRate": 6,
+      "calories": 347,
+      "daysToMaturity": 60,
+      "spread": 34,
+      "height": 38
+    },
+    {
+      "name": "Strawberry",
+      "color": "154, 25, 0",
+      "emoji": "🍓",
+      "weight": 0.0330693,
+      "yieldRate": 25,
+      "calories": 4,
+      "daysToMaturity": 30,
+      "spread": 28,
+      "height": 12
+    },
+    {
+      "name": "Blueberry",
+      "color": "79, 134, 247",
+      "emoji": "🫐",
+      "weight": 0.00440925,
+      "yieldRate": 750,
+      "calories": 1,
+      "daysToMaturity": 365,
+      "spread": 24,
+      "height": 24
+    },
+    {
+      "name": "Eggplant",
+      "color": "97, 64, 81",
+      "emoji": "🍆",
+      "weight": 1.21254,
+      "yieldRate": 5,
+      "calories": 137,
+      "daysToMaturity": 74,
+      "spread": 16,
+      "height": 22
+    },
+    {
+      "name": "Corn",
+      "color": "251, 236, 93",
+      "emoji": "🌽",
+      "weight": 1.25,
+      "yieldRate": 3,
+      "calories": 90,
+      "daysToMaturity": 67,
+      "spread": 12,
+      "height": 60
+    },
+    {
+      "name": "Hot Pepper",
+      "color": "227, 34, 39",
+      "emoji": "🌶️",
+      "weight": 0.0551156,
+      "yieldRate": 35,
+      "calories": 26,
+      "daysToMaturity": 77,
+      "spread": 34,
+      "height": 31
+    },
+    {
+      "name": "Bell Pepper",
+      "color": "68, 116, 61",
+      "emoji": "🫑",
+      "weight": 0.330693,
+      "yieldRate": 7,
+      "calories": 43,
+      "daysToMaturity": 70,
+      "spread": 26,
+      "height": 27
+    },
+    {
+      "name": "Lettuce",
+      "color": "52, 166, 47",
+      "emoji": "🥬",
+      "weight": 1.5,
+      "yieldRate": 1,
+      "calories": 105,
+      "daysToMaturity": 70,
+      "spread": 11,
+      "height": 9
+    },
+    {
+      "name": "Broccoli",
+      "color": "109, 124, 75",
+      "emoji": "🥦",
+      "weight": 0.551156,
+      "yieldRate": 1,
+      "calories": 207,
+      "daysToMaturity": 75,
+      "spread": 12,
+      "height": 33
+    },
+    {
+      "name": "Garlic",
+      "color": "218, 207, 189",
+      "emoji": "🧄",
+      "weight": 0.0264555,
+      "yieldRate": 1,
+      "calories": 28,
+      "daysToMaturity": 90,
+      "spread": 4,
+      "height": 18
+    },
+    {
+      "name": "Onion",
+      "color": "185, 108, 147",
+      "emoji": "🧅",
+      "weight": 0.374786,
+      "yieldRate": 1,
+      "calories": 44,
+      "daysToMaturity": 135,
+      "spread": 5,
+      "height": 28
+    }
+  ]
+}

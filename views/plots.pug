@@ -4,15 +4,13 @@ block headerRight
   a(href="/plots/new")#addPlot.circled ＋
 
 block main
-  ul#plots
+  div#plots
     each plot in plots
-      li
-        a(href=`/plots/${plot.getId()}`).plot-link
-          h3= plot.getName()
-          table.plot.overview
-            tbody
-              each row in plot.getPatches()
-                tr
-                  each patch in row
-                    td(class="patch overview"
-                      style=`--plant-rgb: ${patch.getPlant() ? patch.getPlantColor() : "var(--unplanted-patch-rgb)"}`)= patch.getPlantEmoji()
+      a(href=`/plots/${plot.getId()}`).plot-link
+        h3= plot.getName()
+        div.plot-container.overview
+          each row in plot.getPatches()
+            div.row
+              each patch in row
+                div(class="patch overview"
+                  style=`--plant-rgb: ${patch.getPlantColor()}; --plot-columns: ${plot.getCols()}; --plot-rows: ${plot.getRows()}`)= patch.getPlantEmoji()

@@ -8,12 +8,13 @@ html(lang="en-US")
     meta(name="google" content="notranslate")
     link(rel="stylesheet" href="/css/whitespace-reset.css")
     link(rel="stylesheet" href="/css/style.css")
+    script(src="/js/app.js")
 
   body
     header
       block headerLeft
         h1
-          a(href="/plots" id="name") Garden Planner
+          a(href="/plots" id="name") 🌱 Garden Planner
       block headerCenter
         div
       block headerRight
@@ -27,3 +28,5 @@ html(lang="en-US")
             each message in flash[kind]
               li.flash(class=kind)= message
       block main
+    
+    footer

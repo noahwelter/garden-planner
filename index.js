@@ -9,6 +9,7 @@ const { body, validationResult } = require("express-validator");
 const Plot = require("./lib/plot");
 const Plots = require("./lib/plots");
 const Plants = require("./lib/plants");
+const PlantList = require("./lib/plants.json");
 
 const app = express();
 const HOST = "localhost";
@@ -22,10 +23,9 @@ for (let index = 1; index <= 4; index += 1) {
 }
 
 const plants = new Plants();
-plants.addPlant(new Plant('Carrot', '255, 165, 0', '🥕', 0.31, 1, 186));
-plants.addPlant(new Plant('Tomato', '255, 99, 71', '🍅', 0.37, 30, 81));
-plants.addPlant(new Plant('Cucumber', '202, 222, 198', '🥒', 0.44, 10, 68));
-plants.addPlant(new Plant('Potato', '183, 146, 104', '🥔', 0.47, 6, 347));
+PlantList.plants.forEach(plant => {
+  plants.addPlant(new Plant(plant));
+});
 
 app.set("views", "./views");
 app.set("view engine", "pug");
@@ -89,10 +89,13 @@ app.get("/plots/:plotId", (req, res, next) => {
   if (!plots.hasPlot(plotId)) {
     next(new Error(`Plot ${plotId} not found!`));
   } else {
+    let plot = plots.getPlot(plotId);
+
     res.render("plot", {
       flash: req.flash(),
-      plot: plots.getPlot(plotId),
-      plants: plants.getPlants(),
+      plot,
+      plants,
+      plant: plot.getStagedPlant(),
     });
   }
 });
@@ -113,8 +116,8 @@ const NEW_PLOT_VALIDATION = [
   body("plotName")
     .notEmpty()
     .withMessage("Please enter a name.")
-    .isLength({ max: 100 })
-    .withMessage("Maximum length of plot name is 100 characters."),
+    .isLength({ max: 70 })
+    .withMessage("Maximum length of plot name is 70 characters."),
   body("plotLength")
     .notEmpty()
     .withMessage("Please enter a length.")
@@ -151,14 +154,17 @@ app.post("/plots/new", NEW_PLOT_VALIDATION,
 
 const EDIT_PLOT_VALIDATION = [
   body("plotName")
-    .isLength({ max: 100 })
-    .withMessage("Maximum length of plot name is 100 characters."),
+    .optional({nullable: true, checkFalsy: true})
+    .isLength({ max: 70 })
+    .withMessage("Maximum length of plot name is 70 characters."),
   body("plotLength")
-    .isInt({ min: 1, max: 20})
-    .withMessage("Please enter an integer length between 1 and 20 in feet."),
+    .optional({nullable: true, checkFalsy: true})
+    .isInt({ min: 1, max: 10})
+    .withMessage("Please enter an integer length between 1 and 10 in feet."),
   body("plotWidth")
-    .isInt({ min: 1, max: 20})
-    .withMessage("Please enter an integer width between 1 and 20 in feet."),
+    .optional({nullable: true, checkFalsy: true})
+    .isInt({ min: 1, max: 10})
+    .withMessage("Please enter an integer width between 1 and 10 in feet."),
 ];
 
 app.post("/plots/:plotId/edit-plot-details", EDIT_PLOT_VALIDATION,
@@ -176,11 +182,13 @@ app.post("/plots/:plotId/edit-plot-details", EDIT_PLOT_VALIDATION,
         plotLength,
         plotWidth,
       });
-    } else if (plot.isChanged(plotName, plotLength, plotWidth)) {
+    } else {
+      if (!plotName) plotName = plot.getName();
+      if (!plotLength) plotLength = plot.getLength();
+      if (!plotWidth) plotWidth = plot.getWidth();
+
       plot.update(plotName, plotLength, plotWidth);
       req.flash("success", "Plot updated");
-      res.redirect(`/plots/${plotId}`);
-    } else {
       res.redirect(`/plots/${plotId}`);
     }
   }
@@ -189,7 +197,7 @@ app.post("/plots/:plotId/edit-plot-details", EDIT_PLOT_VALIDATION,
 const PLANT_VALIDATOR = [
   body("plant")
     .notEmpty()
-    .withMessage("Please enter a name.")
+    .withMessage("Please select a plant.")
     .bail()
     .custom((plant, { _req }) => {
       return plants.hasPlant(plant);
@@ -207,7 +215,7 @@ app.post("/plots/:plotId/plant", PLANT_VALIDATOR,
       res.render("plot", {
         flash: req.flash(),
         plot: plots.getPlot(plotId),
-        plants: plants.getPlants(),
+        plants,
       });
     } else if (!plots.hasPlot(plotId)) {
       next(new Error(`Plot ${plotId} not found!`));
@@ -215,9 +223,34 @@ app.post("/plots/:plotId/plant", PLANT_VALIDATOR,
       let plot = plots.getPlot(plotId);
       let plant = plants.getPlant(req.body.plant);
 
-      plot.addPlantsTo(plot.getPatchesToPlant(), plant);
-      req.flash("success", `${plot.getPatchesToPlant().length} ${plant.getEmoji()} planted`);
+      plot.addPlantsTo(plot.getSelectedPatches(), plant);
+      req.flash("success", `${plot.getSelectedPatches().length} ${plant.getEmoji()} planted`);
       plot.clearPatchesToPlant();
+      plot.clearStagedPlant();
+      res.redirect(`/plots/${plotId}`);
+    }
+  }
+);
+
+app.post("/plots/:plotId/plant/info", PLANT_VALIDATOR,
+  (req, res, next) => {
+    let errors = validationResult(req);
+    let plotId = req.params.plotId;
+
+    if (!errors.isEmpty()) {
+      errors.array().forEach(error => req.flash("error", error.msg));
+      res.render("plot", {
+        flash: req.flash(),
+        plot: plots.getPlot(plotId),
+        plants,
+      });
+    } else if (!plots.hasPlot(plotId)) {
+      next(new Error(`Plot ${plotId} not found!`));
+    } else {
+      let plot = plots.getPlot(plotId);
+      let plant = plants.getPlant(req.body.plant);
+      plot.setStagedPlant(plant);
+
       res.redirect(`/plots/${plotId}`);
     }
   }
@@ -230,9 +263,9 @@ app.post("/plots/:plotId/delete-plants", (req, res, next) => {
   if (!plot) {
     next(new Error(`Plot ${plotId} not found!`));
   } else {
-    plot.deletePlantsFrom(plot.getPatchesToPlant());
+    plot.deletePlantsFrom(plot.getSelectedPatches());
     plot.clearPatchesToPlant();
-    req.flash("success", "Plants deleted");
+    req.flash("success", "Plants removed");
     res.redirect(`/plots/${plotId}`);
   }
 });
@@ -283,6 +316,8 @@ app.post("/plots/:plotId/patches/:patchId", (req, res, next) => {
   let plot = plots.getPlot(plotId);
   let patchId = req.params.patchId;
   let patch = plot.getPatch(patchId);
+  let plant = plants.getPlant(req.body.plant);
+  plot.setStagedPlant(plant);
 
   if (!patch) {
     next(new Error(`Patch ${patchId} not found!`));

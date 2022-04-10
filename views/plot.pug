@@ -7,56 +7,103 @@ block headerCenter
   h1= plot.getName()
 
 block headerRight
-  if (plot.getPatchesToPlant().length === 0)
+  if (plot.getSelectedPatches().length === 0)
     a(href=`/plots/${plot.getId()}/edit-plot-details` class="circled") ⋯
   else
     form(action=`/plots/${plot.getId()}/clear-selection` method="post")
-      button(type="submit") Done
+      button Done
 
 block main
   section#plot-data
-    if (plot.somePatchIsPlanted())
-      ul          
-        li
-          form(action=`/plots/${plot.getId()}/clear-plot` method="post")
-            button(type="submit") Remove All Plants
-
     // Table of plant patches
-    table.plot
-      tbody#edit
-        each row in plot.getPatches()
-          tr
-            each patch in row
-              td(class=`${plot.isPatchToPlant(patch) ? "selected" : ""}`
-                style=`--plant-rgb: ${patch.getPlant() ? patch.getPlantColor() : "var(--unplanted-patch-rgb)"}`)
-                div(class=`patch ${plot.isPatchToPlant(patch) ? "selected" : ""}`
-                    style=`--plant-rgb: ${patch.getPlant() ? patch.getPlantColor() : "var(--unplanted-patch-rgb)"}`)
-                  form(action=`/plots/${plot.getId()}/patches/${patch.getId()}` method="post")
-                    button(type="submit")= patch.getPlantEmoji()
+    section.plot-container
+      each row in plot.getPatches()
+        div.row
+          each patch in row
+            div(class="patch"
+              style=`--plant-rgb: ${patch.getPlantColor()}; --plot-rows: ${plot.getRows()}; --plot-columns: ${plot.getCols()}`)
+              div(class=`overlay ${plot.isPatchToPlant(patch) ? "selected" : ""}`)
+                button(form="selected-plant" formaction=`/plots/${plot.getId()}/patches/${patch.getId()}`)= patch.getPlantEmoji()
 
     // Adding plants if a patch is selected
-    if (plot.getPatchesToPlant().length !== 0)
-      form(action=`/plots/${plot.getId()}/plant` method="post" autocomplete="off")
-        label Choose a plant to add:
-        input(list="plant" name="plant")
-        datalist(id="plant")
-          for plant in plants
-            option(value=plant.getName())
-        button(type="submit") Add
-        form(action=`/plots/${plot.getId()}/delete-plants` method="post")
-              button Remove
+    section#plot-details
+      section#plant-selection
+        h2 Plant Selection
+          form(action=`/plots/${plot.getId()}/plant` method="post" autocomplete="off" id="selected-plant")
+        if (plot.getSelectedPatches().length === 0)
+          p Choose a location from the plot to plant or remove a seed.
+        else
+          section.form-list
+            div.flex
+              ul
+                li
+                  input(list="plant"
+                        name="plant"
+                        placeholder="Plant"
+                        pattern=`${plants.getPlantRegexList()}`
+                        title="Please enter a supported plant type."
+                        value=`${plant ? plant : ''}`
+                        form="selected-plant"
+                        id="plant-input")
+                  datalist(id="plant" form="selected-plant")
+                    for plant in plants.getPlants().sort()
+                      option(value=plant.getName())
+                  button(form="selected-plant") Add
+                  button(form="selected-plant" formaction=`/plots/${plot.getId()}/plant/info` id="info-button") Info
+            if (plot.hasPatchesToDelete())
+              div
+                form(id="delete-plants" action=`/plots/${plot.getId()}/delete-plants` method="post")
+                  button(form="delete-plants").cancel Remove
+            if (plot.somePatchIsPlanted())
+              div
+                form(id="clear-plot" action=`/plots/${plot.getId()}/clear-plot` method="post")
+                  button(form="clear-plot").delete Remove All
 
-    // Statistics
-    if (plot.somePatchIsPlanted())
-      table#stats
-        tr
-          th Plant
-          th Yield
-          th Weight (lb)
-          th Calories
-        for stat in plot.getStats()
-          tr
-            td #{stat.name} #{stat.emoji}
-            td= stat.count
-            td= stat.weight.toFixed(1)
-            td= stat.calories
+      if (plant)
+        section#plant-info
+          h2 #{plant} Information #{plant.getEmoji()}
+          section#plant-info-details
+            table(style=`--staged-plant-rgb: ${plant.getColor()}`)
+              tr
+                th Attribute
+                th Value
+              tr
+                td Yield
+                td= plant.getYieldRate().toLocaleString()
+              tr
+                td Weight (lb)
+                td= plant.getPlantWeight().toLocaleString()
+              tr
+                td Calories
+                td= plant.getCalories().toLocaleString()
+              tr
+                td Days to Maturity
+                td= plant.getDaysToMaturity().toLocaleString()
+              tr
+                td Spread (in)
+                td= plant.getSpread().toLocaleString()
+              tr
+                td Height (in)
+                td= plant.getHeight().toLocaleString()
+
+
+
+
+      // Statistics
+      section#statistics
+        h2 Estimated Harvest
+        if (!plot.somePatchIsPlanted())
+          p Plant something to view statistics!
+        else
+          table
+            tr
+              th Plant
+              th Yield
+              th Weight (lb)
+              th Calories
+            for stat in plot.getStats()
+              tr
+                td #{stat.name} #{stat.emoji}
+                td= stat.count
+                td= stat.weight.toLocaleString()
+                td= stat.calories.toLocaleString()

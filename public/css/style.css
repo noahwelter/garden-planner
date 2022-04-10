@@ -6,13 +6,27 @@
   --secondary-color: #689F38;
   --secondary-color-light: #AED581;
   --secondary-color-dark: #558B2F;
+  --color-gray: #757575;
+  --color-gray-light: #EEEEEE;
+  --color-gray-dark: #424242;
+  --error-color: #E53935;
+  --error-color-light: #FFCDD2;
+  --error-color-dark: #B71C1C;
+  --plot-max-width: 70vw;
+  --plot-max-columns: 20;
+  --plot-max-height: calc(80vh - 70px);
+  --plot-overview-max-height: 200px;
+}
+
+h2 {
+  font-size: 20px;
 }
 
 main {
   display: flex;
   flex-direction: column;
   gap: 10px;
-  padding: 0px 15%;
+  padding: 0px 15vw;
 }
 
 body {
@@ -20,7 +34,7 @@ body {
   flex-direction: column;
   gap: 10px;
   background-color: #ebebeb;
-  color: #424242;
+  color: var(--color-gray-dark);
   font-family: Helvetica, sans-serif;
   font-size: 15px;
 }
@@ -29,7 +43,7 @@ body > header {
   display: flex;
   min-height: 60px;
   align-items: center;
-  padding: 15px 15%;
+  padding: 15px 15vw;
   justify-content: space-between;
   background-color: var(--primary-color);
   font-size: 20px;
@@ -54,15 +68,46 @@ body > header button {
   color: inherit;
 }
 
-body > header button.delete {
-  color: #E53935;
+body > header button:hover {
+  background-color: inherit;
 }
 
-body > header button:hover {
+button,
+a.cancel {
+  font-size: 15px;
+  background-color: var(--secondary-color);
+  text-decoration: none;
+  white-space: nowrap;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  color: #ffffff;
   cursor: pointer;
 }
 
-a.circled {
+button:hover {
+  background-color: var(--secondary-color-dark);
+}
+
+button.delete {
+  background-color: var(--error-color);
+}
+
+button.delete:hover {
+  background-color: var(--error-color-dark);
+}
+
+button.cancel,
+a.cancel {
+  background-color: var(--color-gray);
+}
+
+button.cancel:hover,
+a.cancel:hover {
+  background-color: var(--color-gray-dark);
+}
+
+.circled {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -73,7 +118,7 @@ a.circled {
   border-radius: 50%;
 }
 
-a.circled:hover {
+.circled:hover {
   background-color: var(--primary-color-light);
 }
 
@@ -87,36 +132,50 @@ a.circled:hover {
   border-color: var(--secondary-color-dark);
 }
 
-main > form > ul {
+.form-list {
   display: flex;
-  flex-direction: column;
+  gap: 5px;
   background-color: #ffffff;
   border-radius: 10px;
-  border: none;
   padding: 5px 20px;
 }
 
-main > form > ul > li {
-  display: flex;
-  justify-content: flex-end;
-  background-color: transparent;
+.form-list > form {
+  flex: 1;
 }
 
-main > form > ul > li + li {
+.form-list > div.flex {
+  flex: 1;
+}
+
+.form-list ul {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+}
+
+.form-list li {
+  display: flex;
+  flex: 1;
+  gap: 5px;
+  justify-content: flex-end;
+}
+
+.form-list li + li {
   border-top: 1px solid;
   border-color: #a5a5a5;
 }
 
-main > form > ul > li > label {
+.form-list li label {
   padding: 15px 5px;
-  flex: 1;
 }
 
-main > form > ul > li > input {
-  padding: 15px 5px;
-  flex: 2;
+.form-list li input {
+  flex: 1;
+  padding: 10px 20px;
   text-align: right;
   border: none;
+  min-width: 0px;
 }
 
 .flash-container {
@@ -138,108 +197,170 @@ main > form > ul > li > input {
 }
 
 .flash.error {
-  color: #E53935;
-  border-color: #E53935;
-  background-color: #FFCDD2;
+  color: var(--error-color);
+  border-color: var(--error-color);
+  background-color: var(--error-color-light);
 }
 
 #plots {
   display: flex;
   flex-wrap: wrap;
-  gap: 10px;
   justify-content: space-around;
+  gap: 10px;
 }
 
-.plot-link {
-  background-color: var(--secondary-color);
-  color: inherit;
-  text-decoration: none;
-  gap: 5px;
-}
-
-.plot-link:hover {
-  background-color: var(--secondary-color-dark);
-}
-
-.plot-link h3 {
-  position: absolute;
+.plot-container.overview {
   display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 5px 10px;
-  height: 30px;
-  color: #ffffff;
-  background-color: inherit;
-  border-bottom-right-radius: 10px;
+  flex-direction: column;
+  flex: 1;
 }
 
 .patch.overview {
   display: flex;
   align-items: center;
   justify-content: center;
-  height: 80px;
-  width: auto;
+  --patch-width-overview: min(60px, calc(var(--plot-overview-max-height) / var(--plot-rows)));
+  width: var(--patch-width-overview);
   aspect-ratio: 1;
-  border-radius: 0px;
+  font-size: calc(var(--patch-width-overview) / 3);
+}
+
+.plot-link {
+  color: inherit;
+  display: flex;
+  flex-direction: column;
+  align-self: flex-start;
+  align-items: flex-start;
+  text-decoration: none;
+}
+
+.plot-link h3 {
+  background-color: var(--secondary-color);
+  word-wrap: break-word;
+  padding: 10px 10px;
+  color: #ffffff;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+}
+
+.plot-link h3:hover,
+.plot-link:hover > h3  {
+  background-color: var(--secondary-color-dark);
 }
 
 #plot-data {
   display: flex;
   flex-wrap: wrap;
-  justify-content: space-around;
-  gap: 10px;
-  border: solid green;
-  height: 80vh;
-  align-items: flex-start;
-}
-
-.plot {
-  border-collapse: collapse;
-}
-
-.plot tbody {
-  display: flex;
-  flex-direction: column;
-}
-
-.plot tr {
-  display: flex;
-}
-
-.plot td ,
-.plot div {
-  display: flex;
-  flex: 1;
-  align-items: center;
   justify-content: center;
-  aspect-ratio: 1;
-  background-color: rgba(var(--plant-rgb), 0.25);
+  gap: 20px;
 }
 
-.plot button {
+.plot-container {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  max-height: var(--plot-max-height);
+  flex: 1;
+}
+
+.row {
+  display: flex;
+  min-width: 0px;
+}
+
+.patch,
+.overlay,
+.overlay form,
+.overlay button {
+  background: none;
   border: none;
   display: flex;
-  flex-grow: 1;
+  align-items: center;
+  justify-content: center;
+  padding: 0px;
+  --patch-width: min(calc(var(--plot-max-width) / var(--plot-columns)), calc(var(--plot-max-height) / var(--plot-rows)));
+  width: var(--patch-width);
+  font-size: calc(var(--patch-width) / 3);
   aspect-ratio: 1;
+  min-width: 0px;
 }
 
 .patch {
-  border-radius: 50% 0px;
+  background-color: rgba(var(--plant-rgb), 0.25);
 }
 
-div.patch:hover {
+.overlay {
+  border-radius: 50% 0%;
+}
+
+.overlay:hover {
   background-color: rgba(var(--plant-rgb), 1);
 }
 
-.patch.selected {
-  background-color: rgb(var(--plant-rgb), 0.75);
-  font-size: 20px;
+.overlay.selected {
+  background-color: rgba(var(--plant-rgb), 0.75);
 }
 
-.patch.selected:hover {
-  background-color: rgb(var(--plant-rgb), 1);
+.overlay.selected:hover {
+  background-color: rgba(var(--plant-rgb), 1);
 }
 
-#stats th, #stats td {
-  border-style: solid;
+#plot-details {
+  display: flex;
+  flex-direction: column;
+  align-self: flex-start;
+  /* align-items: center; */
+  flex: 1;
+  gap: 20px;
+}
+
+#plant-selection,
+#statistics {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  gap: 5px;
+}
+
+#plant-info-details {
+  display: flex;
+  justify-content: space-between;
+}
+
+table {
+  border-collapse: collapse;
+  table-layout:fixed;
+  background-color: #ffffff;
+}
+
+table th {
+  background-color: var(--secondary-color-light);
+}
+
+table,
+table th,
+table td {
+  word-wrap: break-word;
+  padding: 5px 15px;
+  border: solid 1px var(--color-gray-dark);
+  text-align: center;
+}
+
+#plant-input:invalid ~ #info-button,
+#plant-input:placeholder-shown ~ #info-button {
+  border: red 1px solid;
+  display: none;
+}
+
+#info-button {
+  background-color: var(--primary-color-light);
+  font-size: 15px;
+}
+
+#info-button:hover {
+  background-color: var(--primary-color);
+}
+
+#plant-info-details table th {
+  background-color: rgba(var(--staged-plant-rgb), 0.5);
 }
