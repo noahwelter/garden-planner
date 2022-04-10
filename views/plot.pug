@@ -8,7 +8,7 @@ block headerCenter
 
 block headerRight
   if (plot.getSelectedPatches().length === 0)
-    a(href=`/plots/${plot.getId()}/edit-plot-details` class="circled") ⋯
+    a(href=`/plots/${plot.getId()}/edit-plot-details`) Edit
   else
     form(action=`/plots/${plot.getId()}/clear-selection` method="post")
       button Done
