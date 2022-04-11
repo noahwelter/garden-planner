@@ -18,7 +18,6 @@ block headerRight
 
 block main
   section#plot-data
-    // Table of plant patches
     section.plot-container
       each row in plot.getPatches()
         div.row
@@ -28,7 +27,6 @@ block main
               div(class=`overlay ${plot.isPatchToPlant(patch) ? "selected" : ""}`)
                 button(form="selected-plant" formaction=`/plots/${plot.getId()}/patches/${patch.getId()}`)= patch.getPlantEmoji()
 
-    // Adding plants if a patch is selected
     div#plot-details
       section#plant-selection
         h2 Plant Selection
@@ -45,7 +43,7 @@ block main
                         placeholder="Plant"
                         pattern=`${plants.getPlantRegexList()}`
                         title="Please enter a supported plant type."
-                        value=`${plant ? plant : ''}`
+                        value=`${stagedPlant ? stagedPlant : ''}`
                         form="selected-plant"
                         id="plant-input")
                   datalist(id="plantList" form="selected-plant")
@@ -62,34 +60,33 @@ block main
                 form(id="clear-plot" action=`/plots/${plot.getId()}/clear-plot` method="post")
                   button(form="clear-plot").delete Remove All
 
-      if (plant)
+      if (infoPlant)
         section#plant-info
-          h2 #{plant} Information #{plant.getEmoji()}
+          h2 #{infoPlant} Information #{infoPlant.getEmoji()}
           section#plant-info-details
-            table(style=`--staged-plant-rgb: ${plant.getColor()}`)
+            table(style=`--staged-plant-rgb: ${infoPlant.getColor()}`)
               tr
                 th Attribute
                 th Value
               tr
                 td Yield
-                td= plant.getYieldRate().toLocaleString()
+                td= infoPlant.getYieldRate().toLocaleString()
               tr
                 td Weight (lb)
-                td= plant.getPlantWeight().toLocaleString()
+                td= infoPlant.getPlantWeight().toLocaleString()
               tr
                 td Calories
-                td= plant.getCalories().toLocaleString()
+                td= infoPlant.getCalories().toLocaleString()
               tr
                 td Days to Maturity
-                td= plant.getDaysToMaturity().toLocaleString()
+                td= infoPlant.getDaysToMaturity().toLocaleString()
               tr
                 td Spread (in)
-                td= plant.getSpread().toLocaleString()
+                td= infoPlant.getSpread().toLocaleString()
               tr
                 td Height (in)
-                td= plant.getHeight().toLocaleString()
+                td= infoPlant.getHeight().toLocaleString()
 
-      // Statistics
       section#statistics
         h2 Estimated Harvest
         if (!plot.somePatchIsPlanted())

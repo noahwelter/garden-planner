@@ -1,16 +1,20 @@
 extends layout
 
 block headerRight
-  a(href="/plots/new")#addPlot.circled ＋
+  a(href="/plots/new").addPlot.circled ＋
 
 block main
-  section#plots
-    each plot in plots.getPlots()
-      a(href=`/plots/${plot.getId()}`).plot-link
-        h3= plot.getName()
-        div.plot-container.overview
-          each row in plot.getPatches()
-            div.row
-              each patch in row
-                div(class="patch overview"
-                  style=`--plant-rgb: ${patch.getPlantColor()}; --plot-columns: ${plot.getCols()}; --plot-rows: ${plot.getRows()}`)= patch.getPlantEmoji()
+  if (plots.getPlots().length === 0)
+    section#noPlots
+      h2 You have not created any plots
+  else
+    section#plots
+      each plot in plots.getPlots()
+        a(href=`/plots/${plot.getId()}`).plot-link
+          h3= plot.getName()
+          div.plot-container.overview
+            each row in plot.getPatches()
+              div.row
+                each patch in row
+                  div(class="patch overview"
+                    style=`--plant-rgb: ${patch.getPlantColor()}; --plot-columns: ${plot.getCols()}; --plot-rows: ${plot.getRows()}`)= patch.getPlantEmoji()

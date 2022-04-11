@@ -16,6 +16,7 @@
   --plot-max-columns: 50;
   --plot-max-height: calc(80vh - 70px);
   --plot-overview-max-height: 200px;
+  --plot-overview-max-width: 500px;
   --gap-small: 5px;
   --gap-medium: 10px;
   --gap-large: 20px;
@@ -26,13 +27,6 @@ h2 {
   font-weight: normal;
 }
 
-main {
-  display: flex;
-  flex-direction: column;
-  gap: var(--gap-medium);
-  padding: 0px 15vw;
-}
-
 body {
   display: flex;
   flex-direction: column;
@@ -41,6 +35,7 @@ body {
   color: var(--color-gray-dark);
   font-family: Helvetica, sans-serif;
   font-size: 15px;
+  min-height: 100vh;
 }
 
 body > header {
@@ -70,6 +65,14 @@ body > header button {
 
 body > header button:hover {
   background-color: inherit;
+}
+
+main {
+  display: flex;
+  flex-direction: column;
+  gap: var(--gap-medium);
+  padding: 0px 15vw;
+  flex: 1;
 }
 
 button.stripped {
@@ -129,19 +132,21 @@ a.cancel:hover {
   background-color: var(--primary-color-light);
 }
 
-a#addPlot {
+a.addPlot {
+  text-decoration: none;
+  color: #ffffff;
   background-color: var(--secondary-color);
   border-color: var(--secondary-color);
 }
 
-a#addPlot:hover {
+a.addPlot:hover {
   background-color: var(--secondary-color-dark);
   border-color: var(--secondary-color-dark);
 }
 
 .form-list {
   display: flex;
-  gap: 5px;
+  gap: var(--gap-small);
   background-color: #ffffff;
   border-radius: 10px;
   padding: 5px 20px;
@@ -165,7 +170,7 @@ a#addPlot:hover {
 .form-list li {
   display: flex;
   flex: 1;
-  gap: 5px;
+  gap: var(--gap-small);
   justify-content: flex-end;
 }
 
@@ -189,7 +194,7 @@ a#addPlot:hover {
 .flash-container {
   display: flex;
   flex-direction: column;
-  gap: 5px;
+  gap: var(--gap-small);
 }
 
 .flash {
@@ -210,17 +215,24 @@ a#addPlot:hover {
   background-color: var(--error-color-light);
 }
 
+#noPlots {
+  display: flex;
+  flex: 1;
+  justify-content: center;
+  align-items: center;
+  color: var(--color-gray);
+}
+
 #plots {
   display: flex;
   flex-wrap: wrap;
   justify-content: space-around;
-  gap: 10px;
+  gap: var(--gap-medium);
 }
 
 .plot-container.overview {
   display: flex;
   flex-direction: column;
-  flex: 1;
 }
 
 .patch.overview {
@@ -228,7 +240,7 @@ a#addPlot:hover {
   align-items: center;
   justify-content: center;
   --patch-width-overview: min(60px, calc(var(--plot-overview-max-height) / var(--plot-rows)));
-  width: var(--patch-width-overview);
+  width: min(var(--plot-overview-max-width) / var(--plot-columns), var(--patch-width-overview));
   aspect-ratio: 1;
   font-size: calc(var(--patch-width-overview) / 3);
 }
@@ -260,7 +272,7 @@ a#addPlot:hover {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-  gap: 20px;
+  gap: var(--gap-large);
 }
 
 .plot-container {
@@ -317,17 +329,18 @@ a#addPlot:hover {
   display: flex;
   flex-direction: column;
   align-self: flex-start;
-  /* align-items: center; */
   flex: 1;
-  gap: 20px;
+  gap: var(--gap-large);
 }
 
 #plant-selection,
+#plant-info,
 #statistics {
   display: flex;
   flex-direction: column;
   flex: 1;
-  gap: 5px;
+  gap: var(--gap-small);
+  min-width: 590px;
 }
 
 #plant-info-details {
