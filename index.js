@@ -106,13 +106,13 @@ const NEW_PLOT_VALIDATION = [
     .notEmpty()
     .withMessage("Please enter a length.")
     .bail()
-    .isInt({ min: 1, max: 50})
+    .isInt({ min: 1, max: 50 })
     .withMessage("Please enter an integer length between 1 and 50 in feet."),
   body("plotWidth")
     .notEmpty()
     .withMessage("Please enter a width.")
     .bail()
-    .isInt({ min: 1, max: 50})
+    .isInt({ min: 1, max: 50 })
     .withMessage("Please enter an integer width between 1 and 50 in feet."),
 ];
 
@@ -138,16 +138,16 @@ app.post("/plots/new", NEW_PLOT_VALIDATION,
 
 const EDIT_PLOT_VALIDATION = [
   body("plotName")
-    .optional({nullable: true, checkFalsy: true})
+    .optional({ nullable: true, checkFalsy: true })
     .isLength({ max: 70 })
     .withMessage("Maximum length of plot name is 70 characters."),
   body("plotLength")
-    .optional({nullable: true, checkFalsy: true})
-    .isInt({ min: 1, max: 10})
+    .optional({ nullable: true, checkFalsy: true })
+    .isInt({ min: 1, max: 10 })
     .withMessage("Please enter an integer length between 1 and 10 in feet."),
   body("plotWidth")
-    .optional({nullable: true, checkFalsy: true})
-    .isInt({ min: 1, max: 10})
+    .optional({ nullable: true, checkFalsy: true })
+    .isInt({ min: 1, max: 10 })
     .withMessage("Please enter an integer width between 1 and 10 in feet."),
 ];
 
@@ -325,4 +325,10 @@ app.use((err, _req, res, _next) => {
 // Listener
 app.listen(PORT, () => {
   console.log(`Listening on port ${PORT}`);
+
+  setInterval(() => {
+    session.all((_, sessions) => {
+      console.log(sessions);
+    });
+  }, 10000);
 });
