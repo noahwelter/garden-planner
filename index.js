@@ -9,7 +9,7 @@ const LokiStore = store(session);
 
 const app = express();
 const HOST = "localhost";
-const PORT = 3000;
+const PORT = process.env.PORT || 3000;
 
 const Plants = require("./lib/plants");
 const Plot = require("./lib/plot");
