@@ -11,21 +11,12 @@ const app = express();
 const HOST = "localhost";
 const PORT = 3000;
 
-const Plant = require("./lib/plant");
 const Plants = require("./lib/plants");
-const PLANT_LIST = require("./lib/plants.json");
 const Plot = require("./lib/plot");
 const Plots = require("./lib/plots");
 
-// Initial setup for testing
 const plots = new Plots();
-
-
 const plants = new Plants();
-
-PLANT_LIST.plants.forEach(plant => {
-  plants.addPlant(new Plant(plant));
-});
 
 app.set("views", "./views");
 app.set("view engine", "pug");
