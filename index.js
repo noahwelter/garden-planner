@@ -8,7 +8,7 @@ const store = require("connect-loki");
 const LokiStore = store(session);
 
 const app = express();
-const HOST = "localhost";
+// const HOST = "localhost";
 const PORT = process.env.PORT || 3000;
 
 const Plants = require("./lib/plants");
@@ -323,6 +323,6 @@ app.use((err, _req, res, _next) => {
 });
 
 // Listener
-app.listen(PORT, HOST, () => {
-  console.log(`Listening on port ${PORT} of ${HOST}`);
+app.listen(PORT, () => {
+  console.log(`Listening on port ${PORT}`);
 });
