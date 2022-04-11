@@ -325,10 +325,4 @@ app.use((err, _req, res, _next) => {
 // Listener
 app.listen(PORT, () => {
   console.log(`Listening on port ${PORT}`);
-
-  setInterval(() => {
-    session.all((_, sessions) => {
-      console.log(sessions);
-    });
-  }, 10000);
 });
