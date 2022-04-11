@@ -1,17 +1,20 @@
 extends layout
 
 block headerLeft
-  a(href="/plots") 〈 Plots
+  h2
+    a(href="/plots") 〈 Plots
 
 block headerCenter
   h1= plot.getName()
 
 block headerRight
   if (plot.getSelectedPatches().length === 0)
-    a(href=`/plots/${plot.getId()}/edit-plot-details`) Edit
+    h2
+      a(href=`/plots/${plot.getId()}/edit-plot-details`) Edit
   else
     form(action=`/plots/${plot.getId()}/clear-selection` method="post")
-      button Done
+      button.stripped
+        h2 Done
 
 block main
   section#plot-data
@@ -26,18 +29,18 @@ block main
                 button(form="selected-plant" formaction=`/plots/${plot.getId()}/patches/${patch.getId()}`)= patch.getPlantEmoji()
 
     // Adding plants if a patch is selected
-    section#plot-details
+    div#plot-details
       section#plant-selection
         h2 Plant Selection
           form(action=`/plots/${plot.getId()}/plant` method="post" autocomplete="off" id="selected-plant")
         if (plot.getSelectedPatches().length === 0)
           p Choose a location from the plot to plant or remove a seed.
         else
-          section.form-list
+          div.form-list
             div.flex
               ul
                 li
-                  input(list="plant"
+                  input(list="plantList"
                         name="plant"
                         placeholder="Plant"
                         pattern=`${plants.getPlantRegexList()}`
@@ -45,7 +48,7 @@ block main
                         value=`${plant ? plant : ''}`
                         form="selected-plant"
                         id="plant-input")
-                  datalist(id="plant" form="selected-plant")
+                  datalist(id="plantList" form="selected-plant")
                     for plant in plants.getPlants().sort()
                       option(value=plant.getName())
                   button(form="selected-plant") Add

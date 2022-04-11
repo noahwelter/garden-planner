@@ -1,7 +1,8 @@
 extends layout
 
 block headerLeft
-  a(href="/plots") 〈 Plots
+  h2
+    a(href="/plots") 〈 Plots
 
 block headerCenter
   h1 Create Plot
@@ -20,13 +21,13 @@ block main
           label(for="plotLength") Length (ft)
           input(type="text"
                 name="plotLength"
-                placeholder="4"
+                placeholder="8"
                 value=plotLength)
         li
           label(for="plotWidth") Width (ft)
           input(type="text"
                 name="plotWidth"
-                placeholder="8"
+                placeholder="4"
                 value=plotWidth)
       ul
         li

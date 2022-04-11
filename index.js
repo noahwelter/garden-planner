@@ -1,29 +1,29 @@
 /* eslint-disable max-lines-per-function */
 const express = require("express");
 const morgan = require("morgan");
-const Plant = require("./lib/plant");
 const flash = require("express-flash");
 const session = require("express-session");
 const { body, validationResult } = require("express-validator");
-// const store = require("connect-loki");
-const Plot = require("./lib/plot");
-const Plots = require("./lib/plots");
-const Plants = require("./lib/plants");
-const PlantList = require("./lib/plants.json");
+const store = require("connect-loki");
+const LokiStore = store(session);
 
 const app = express();
 const HOST = "localhost";
 const PORT = 3000;
-//const LokiStore = store(session);
+
+const Plant = require("./lib/plant");
+const Plants = require("./lib/plants");
+const PLANT_LIST = require("./lib/plants.json");
+const Plot = require("./lib/plot");
+const Plots = require("./lib/plots");
 
 // Initial setup for testing
 const plots = new Plots();
-for (let index = 1; index <= 4; index += 1) {
-  plots.addPlot(new Plot(`Plot ${index}`, index, index + 1));
-}
+
 
 const plants = new Plants();
-PlantList.plants.forEach(plant => {
+
+PLANT_LIST.plants.forEach(plant => {
   plants.addPlant(new Plant(plant));
 });
 
@@ -44,30 +44,23 @@ app.use(session({
   resave: false,
   saveUninitialized: true,
   secret: "unsecure_secret",
+  store: new LokiStore({}),
 }));
 
 app.use(flash());
 
 // Set up persistent session data
 // app.use((req, res, next) => {
-//   let plots = [];
 
-//   if ("plots" in req.session) {
-//     req.session.plots.forEach(plot => {
-//       plots.push(Plot.makePlot(plot));
-//     });
-//   }
-
-//   req.session.plots = plots;
 //   next();
 // });
 
-// // Extract session info
-// app.use((req, res, next) => {
-//   res.locals.flash = req.session.flash;
-//   delete req.session.flash;
-//   next();
-// });
+// Extract session info
+app.use((req, res, next) => {
+  res.locals.flash = req.session.flash;
+  delete req.session.flash;
+  next();
+});
 
 app.get("/", (_req, res) => {
   res.redirect("plots");
@@ -75,7 +68,7 @@ app.get("/", (_req, res) => {
 
 app.get("/plots", (_req, res) => {
   res.render("plots", {
-    plots: plots.getPlots(),
+    plots: plots,
   });
 });
 
@@ -122,14 +115,14 @@ const NEW_PLOT_VALIDATION = [
     .notEmpty()
     .withMessage("Please enter a length.")
     .bail()
-    .isInt({ min: 1, max: 20})
-    .withMessage("Please enter an integer length between 1 and 20 in feet."),
+    .isInt({ min: 1, max: 50})
+    .withMessage("Please enter an integer length between 1 and 50 in feet."),
   body("plotWidth")
     .notEmpty()
     .withMessage("Please enter a width.")
     .bail()
-    .isInt({ min: 1, max: 20})
-    .withMessage("Please enter an integer width between 1 and 20 in feet."),
+    .isInt({ min: 1, max: 50})
+    .withMessage("Please enter an integer width between 1 and 50 in feet."),
 ];
 
 app.post("/plots/new", NEW_PLOT_VALIDATION,

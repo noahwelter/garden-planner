@@ -13,27 +13,31 @@
   --error-color-light: #FFCDD2;
   --error-color-dark: #B71C1C;
   --plot-max-width: 70vw;
-  --plot-max-columns: 20;
+  --plot-max-columns: 50;
   --plot-max-height: calc(80vh - 70px);
   --plot-overview-max-height: 200px;
+  --gap-small: 5px;
+  --gap-medium: 10px;
+  --gap-large: 20px;
 }
 
 h2 {
   font-size: 20px;
+  font-weight: normal;
 }
 
 main {
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: var(--gap-medium);
   padding: 0px 15vw;
 }
 
 body {
   display: flex;
   flex-direction: column;
-  gap: 10px;
-  background-color: #ebebeb;
+  gap: var(--gap-medium);
+  background-color: var(--color-gray-light);
   color: var(--color-gray-dark);
   font-family: Helvetica, sans-serif;
   font-size: 15px;
@@ -46,7 +50,6 @@ body > header {
   padding: 15px 15vw;
   justify-content: space-between;
   background-color: var(--primary-color);
-  font-size: 20px;
   color: #ffffff;
   border-bottom: solid 1px var(--primary-color-dark);
 }
@@ -62,14 +65,16 @@ body > header a {
 }
 
 body > header button {
-  border: none;
   background-color: inherit;
-  font: inherit;
-  color: inherit;
 }
 
 body > header button:hover {
   background-color: inherit;
+}
+
+button.stripped {
+  padding: 0px;
+  margin: 0px;
 }
 
 button,
@@ -110,6 +115,7 @@ a.cancel:hover {
 
 .circled {
   display: flex;
+  flex-shrink: 0;
   align-items: center;
   justify-content: center;
   border: solid 2px;
@@ -123,12 +129,12 @@ a.cancel:hover {
   background-color: var(--primary-color-light);
 }
 
-#addPlot {
+a#addPlot {
   background-color: var(--secondary-color);
   border-color: var(--secondary-color);
 }
 
-#addPlot:hover {
+a#addPlot:hover {
   background-color: var(--secondary-color-dark);
   border-color: var(--secondary-color-dark);
 }
@@ -143,6 +149,7 @@ a.cancel:hover {
 
 .form-list > form {
   flex: 1;
+  min-width: 0px;
 }
 
 .form-list > div.flex {
@@ -176,7 +183,7 @@ a.cancel:hover {
   padding: 10px 20px;
   text-align: right;
   border: none;
-  min-width: 0px;
+  width: 50px;
 }
 
 .flash-container {

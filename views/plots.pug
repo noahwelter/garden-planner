@@ -4,8 +4,8 @@ block headerRight
   a(href="/plots/new")#addPlot.circled ＋
 
 block main
-  div#plots
-    each plot in plots
+  section#plots
+    each plot in plots.getPlots()
       a(href=`/plots/${plot.getId()}`).plot-link
         h3= plot.getName()
         div.plot-container.overview
